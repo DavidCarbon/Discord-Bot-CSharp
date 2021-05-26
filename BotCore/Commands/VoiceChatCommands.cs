@@ -2,6 +2,7 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace DiscordBot.BotCore.Commands
@@ -13,16 +14,23 @@ namespace DiscordBot.BotCore.Commands
         [Description("Mutes a User in a Voice Channel")]
         public async Task MuteCommand(CommandContext ctx, DiscordMember member)
         {
-            bool MuteBoolean = false;
-            string MuteStatus = "Muted";
-
-            if (member.IsMuted == true)
+            try
             {
-                MuteBoolean = false;
-                MuteStatus = "UnMuted";
+                bool MuteBoolean = true;
+                string MuteStatus = "Muted";
+
+                if (member.IsMuted == true)
+                {
+                    MuteBoolean = false;
+                    MuteStatus = "UnMuted";
+                }
+                await member.SetMuteAsync(MuteBoolean);
+                await ctx.RespondAsync($"{member.Username} has been " + MuteStatus);
             }
-            await member.SetMuteAsync(MuteBoolean);
-            await ctx.RespondAsync($"{member.Username} has been " + MuteStatus);
+            catch
+            {
+                await ctx.RespondAsync("Unable to Mute " + member.Username);
+            }
         }
 
         [Command("amimuted")]
