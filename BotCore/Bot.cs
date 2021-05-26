@@ -1,6 +1,9 @@
 ﻿using DiscordBot.BotCore.Commands;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Extensions;
+using DSharpPlus.VoiceNext;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
@@ -14,6 +17,8 @@ namespace DiscordBot.BotCore
 
         public static CommandsNextExtension Commands { get; private set; }
 
+        public VoiceNextExtension Voice { get; private set; }
+
         public async Task RunBotAsync()
         {
             string json = string.Empty;
@@ -25,6 +30,9 @@ namespace DiscordBot.BotCore
             var ConfigJson = JsonConvert.DeserializeObject<ConfigurationJson>(json);
 
             Client = new DiscordClient(BotConfiguration.Client);
+            Voice = Client.UseVoiceNext();
+            Client.UseInteractivity(BotConfiguration.Interactivity);
+
             Client.Ready += DiscordEvents.ClientReady;
             Client.GuildAvailable += DiscordEvents.GuildAvailable;
             /* Logging for Errors */

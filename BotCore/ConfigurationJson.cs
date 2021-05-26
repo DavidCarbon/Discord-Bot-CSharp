@@ -1,12 +1,21 @@
 ﻿using DSharpPlus;
 using DSharpPlus.CommandsNext;
+using DSharpPlus.Interactivity;
+using DSharpPlus.Interactivity.Enums;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
 
 namespace DiscordBot.BotCore
 {
     class BotConfiguration
     {
+        public static InteractivityConfiguration Interactivity = new InteractivityConfiguration
+        {
+            PollBehaviour = PollBehaviour.KeepEmojis,
+            Timeout = TimeSpan.FromSeconds(30)
+        };
+
         public static DiscordConfiguration Client = new DiscordConfiguration
         {
             Token = ConfigurationJson.Token,
